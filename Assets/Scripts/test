@@ -1,0 +1,1 @@
+csc /t:module Tafel.cs && csc /addmodule:Tafel.netmodule Test.cs && mono Test.exe

@@ -1,0 +1,15 @@
+﻿<Properties StartupConfiguration="{510BB7A7-0DD6-EF2F-78F4-1CDDA9052928}|">
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Test.cs">
+    <Files>
+      <File FileName="Assets/Scripts/Tafel.cs" Line="133" Column="35" />
+      <File FileName="Assets/Scripts/Test.cs" Line="83" Column="40" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

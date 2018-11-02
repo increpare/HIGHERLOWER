@@ -5,13 +5,23 @@ using UnityEngine.UI;
 
 public class SpracheS : MonoBehaviour {
 
+    [TextArea]
     public string de;
+
+    [TextArea]
     public string en;
 
     public void UpdateText()
     {
+        var s = Sprache.sprache == "DE" ? de : en;
         var t = this.GetComponent<Text>();
-        t.text = Sprache.sprache == "DE" ? de : en;
+        if (t!=null){
+            t.text = s;
+        }
+        var u = this.GetComponent<TextMesh>();
+        if (u!=null){
+            u.text = s;
+        }
     }
 
     // Use this for initialization

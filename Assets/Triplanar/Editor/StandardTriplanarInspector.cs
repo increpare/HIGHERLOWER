@@ -10,8 +10,6 @@ public class StandardTriplanarInspector : ShaderGUI
     {
         static public readonly GUIContent albedo_wand = new GUIContent("Albedo Wand", "Albedo Wand (RGB)");
         static public readonly GUIContent albedo_boden = new GUIContent("Albedo Boden", "Albedo Boden (RGB)");
-        static public readonly GUIContent normalMap = new GUIContent("Normal Map", "Normal Map");
-        static public readonly GUIContent occlusion = new GUIContent("Occlusion", "Occlusion (G)");
     }
 
     bool _initialized;
@@ -31,17 +29,7 @@ public class StandardTriplanarInspector : ShaderGUI
         editor.ShaderProperty(FindProperty("_Metallic", props), "Metallic");
         editor.ShaderProperty(FindProperty("_Glossiness", props), "Smoothness");
 
-        var normal = FindProperty("_BumpMap", props);
-        editor.TexturePropertySingleLine(
-            Styles.normalMap, normal,
-            normal.textureValue ? FindProperty("_BumpScale", props) : null
-        );
 
-        var occ = FindProperty("_OcclusionMap", props);
-        editor.TexturePropertySingleLine(
-            Styles.occlusion, occ,
-            occ.textureValue ? FindProperty("_OcclusionStrength", props) : null
-        );
 
         editor.ShaderProperty(FindProperty("_MapScale", props), "Texture Scale");
 
@@ -54,8 +42,6 @@ public class StandardTriplanarInspector : ShaderGUI
 
     static void SetMaterialKeywords(Material material)
     {
-        SetKeyword(material, "_NORMALMAP", material.GetTexture("_BumpMap"));
-        SetKeyword(material, "_OCCLUSIONMAP", material.GetTexture("_OcclusionMap"));
     }
 
     static void SetKeyword(Material m, string keyword, bool state)

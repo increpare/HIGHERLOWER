@@ -647,9 +647,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tafel: {fileID: 2800000, guid: 67a355c5970224caf97ea9398c1b181e, type: 3}
   col: {r: 0.6745098, g: 0.7019608, b: 0.45098042, a: 1}
+  col_bg: {r: 0.24705884, g: 0.3137255, b: 0.25490198, a: 1}
   hinweis_voll: {r: 0.69803923, g: 0.62019175, b: 0.4627451, a: 1}
   hinweis_leer: {r: 0.3137255, g: 0.28602368, b: 0.24705882, a: 1}
+  tex: {fileID: 0}
+  tex_ergebnisse: 
+  regentex: 0
   density: 0.5
+  l1: 0
+  l2: 0
+  l3: 0
+  l4: 0
+  l5: 0
+  l6: 0
+  l7: 0
+  l8: 0
+  l9: 0
+  l10: 0
+  l11: 0
+  l12: 0
+  l13: 0
+  l14: 0
+  l15: 0
 --- !u!1 &1352413706
 GameObject:
   m_ObjectHideFlags: 0

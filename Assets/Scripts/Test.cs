@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 class Hello 
 {
     static void ZeigTafel(bool[,] tafel,int dir, int x, int y){
@@ -82,7 +83,8 @@ class Hello
         }
     }
     static void Main() 
-    {
+    {      
+
         //TryTest();
         //return;
 

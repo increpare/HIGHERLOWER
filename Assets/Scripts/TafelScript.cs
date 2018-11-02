@@ -3,30 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using System.IO;
+
 public class TafelScript : MonoBehaviour {
 
 
 
     public Texture2D tafel;
    
-    private static string testString =
-@"..O.....X.....O......
- .........O...........
-.....O...X...........
-..O..........O......O
-..O........OO....O.O.
-O......O........O...O
-...O....O....OOO.....
-....O...O.........O..
-.O.......O.....O.....
-.............O.......
-O....................
-...O.....O.O.........
-......O.........O....
-..............O.O....
-O...O................
-O.......O....O..O....
-.................O...";
+
+[Multiline]
+    public String startstring="";
 
     // Use this for initialization
     void Start () {
@@ -44,14 +31,11 @@ O.......O....O..O....
 
 
         tafel.Apply();
-        //StartCoroutine(Gen());
-        //var ar = Tafel.FromString(testString);
-        //Debug.Log(ar);
-        //ZeigTafel(ar);
-	}
+
+    }
 
     //IEnumerator Gen(){
-    //    bool[,] ar = null;
+    //    _ar = null;
     //    for (var i = 0; i < 1000; i++)
     //    {
     //        float density = Random.Range(0.1f, 0.5f);
@@ -61,7 +45,7 @@ O.......O....O..O....
     //        Debug.Log(pr);
     //        if (pr == 1)
     //        {
-    //            ZeigTafel(ar);
+    //            ZeigTafel(_ar);
     //            yield return new WaitForSeconds(5.0f);
     //        }
     //    }
@@ -77,17 +61,19 @@ O.......O....O..O....
 
 
     public Color col;
+    public Color col_bg;
     public Color hinweis_voll;
     public Color hinweis_leer;
+
+    public Texture2D tex;
+    public int[] tex_ergebnisse;
+    public bool regentex;
 
     void ZeigTafel(bool[,] ar,int dir=-2, int x=-1, int y=-1)
     {
         x++;
         y++;
-
-
-        Color32 resetColor = new Color32(255, 255, 255, 0);
-
+        
         var hint = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
         for (var i = 0; i < Tafel.TW ; i++)
@@ -141,136 +127,11 @@ O.......O....O..O....
         tafel.Apply();
     }
 
-    private bool[,] _ar=null;
-    private int _ax;
-    private int _ay;
-    private int _apr;
 
     public float density = 0.5f;
 
 
-    bool Verbesser(bool[,] ar, bool fancy, ref int x, ref int y)
-    {
-        var replacementsmade = false;
-        x = 0;
-        y = 0;
-        int ax=0;
-        int ay=0;
 
-        var orig_pr = Tafel.PrüfRichtung(ar, out x, out y);
-
-
-        for (var i = 1; i < Tafel.TW - 5; i++)
-        {
-            for (var j = 1; j < Tafel.TH-1; j++)
-            {
-                var v0 = ar[i + 0, j];
-                var v1 = ar[i + 1, j];
-                var v2 = ar[i + 2, j];
-                var v3 = ar[i + 3, j];
-                if ((v0 == !v1) && (v0 == !v2) && (v0 == v3))
-                {
-                    var r = UnityEngine.Random.Range(0, 4);
-                    ar[i + r, j] = !ar[i + r, j];
-                    var new_pr = fancy ? Tafel.PrüfRichtungMitHinzufügen(ar, out ax, out ay) : Tafel.PrüfRichtung(ar, out ax, out ay);
-                    if (new_pr != orig_pr)
-                    {
-                        ar[i + r, j] = !ar[i + r, j];
-                    }
-                    else
-                    {
-                        x = ax;
-                        y = ay;
-                        replacementsmade = true;
-                    }
-                }
-            }
-        }
-
-
-        for (var i = 1; i < Tafel.TW-1; i++)
-        {
-            for (var j = 1; j < Tafel.TH-4; j++)
-            {
-                var v0 = ar[i, j];
-                var v1 = ar[i, j+1];
-                var v2 = ar[i, j+2];
-                var v3 = ar[i, j+3];
-                if ((v0 == !v1) && (v0 == !v2) && (v0 == v3))
-                {
-                    var r = UnityEngine.Random.Range(0, 4);
-                    ar[i, j+r] = !ar[i, j+r];
-                    var new_pr = fancy ? Tafel.PrüfRichtungMitHinzufügen(ar, out ax, out ay) : Tafel.PrüfRichtung(ar, out ax, out ay);
-                    if (new_pr != orig_pr)
-                    {
-                        ar[i, j + r] = !ar[i, j + r];
-                    }
-                    else
-                    {
-                        x = ax;
-                        y = ay;
-                        replacementsmade = true;
-                    }
-                }
-            }
-        }
-
-
-        for (var i = 1; i < Tafel.TW-6; i++)
-        {
-            for (var j = 1; j < Tafel.TH-1; j++)
-            {
-                var v0 = ar[i+0, j];
-                var v1 = ar[i+1, j];
-                var v2 = ar[i+2, j];
-                var v3 = ar[i+3, j];
-                var v4 = ar[i+4, j];
-                if ( (v0 == v1) && (v0 == v2) && (v0 == v3) && (v0 == v4) ){
-                    var r = UnityEngine.Random.Range(0, 5);
-                    ar[i + r, j] = !ar[i + r, j];
-                    var new_pr = fancy ? Tafel.PrüfRichtungMitHinzufügen(ar, out ax, out ay) : Tafel.PrüfRichtung(ar, out ax, out ay);
-                    if (new_pr != orig_pr) {
-                        ar[i + r, j] = !ar[i + r, j];
-                    }
-                    else
-                    {
-                        x = ax;
-                        y = ay;
-                        replacementsmade = true;
-                    }
-                }
-            }
-        }
-
-        for (var i = 1; i < Tafel.TW-1; i++)
-        {
-            for (var j = 1; j < Tafel.TH-6; j++)
-            {
-                var v0 = ar[i, j+0];
-                var v1 = ar[i, j+1];
-                var v2 = ar[i, j+2];
-                var v3 = ar[i, j+3];
-                var v4 = ar[i, j+4];
-                if ((v0 == v1) && (v0 == v2) && (v0 == v3) && (v0 == v4))
-                {
-                    var r = UnityEngine.Random.Range(0, 5);
-                    ar[i, j+r] = !ar[i, j+r];
-                    var new_pr = fancy ? Tafel.PrüfRichtungMitHinzufügen(ar, out ax, out ay) : Tafel.PrüfRichtung(ar, out ax, out ay);
-                    if (new_pr != orig_pr)
-                    {
-                        ar[i, j+r] = !ar[i, j+r];
-                    } else
-                    {
-                        x = ax;
-                        y = ay;
-                        replacementsmade = true;
-                    }
-                }
-            }
-        }
-
-        return replacementsmade;
-    }
 
 
     public bool l1 = false;
@@ -289,71 +150,200 @@ O.......O....O..O....
     public bool l14 = false;
     public bool l15 = false;
 
+    public static int imageKopieGröße = 512;
 
+    public static int imagekopien = 10;//war 38
+
+    IEnumerator GenTex(){
+        tex = new Texture2D(imageKopieGröße,imageKopieGröße);
+        tex_ergebnisse = new int[15 * imagekopien];
+
+        int curx = 0;
+        int cury = 0;
+        for (var i = 1;i <= 15;i++){
+            for (var kopie = 0; kopie < imagekopien;kopie++){
+                Debug.Log(i+"_"+(kopie+1));
+                int x,y,d;
+                var tafel = Tafel.mitNiveau(i,out d, out x, out y);
+                int tei = (i-1) * imagekopien + kopie;
+               // Debug.Log("te "+tei+" = " + d);
+                tex_ergebnisse[tei] = d;
+
+                for (int ix = 0; ix < Tafel.TW; ix++)
+                {
+                    for (int iy = 0; iy < Tafel.TH; iy++)
+                    {
+                        if (tafel[ix, iy])
+                        {
+                            tex.SetPixel(curx + ix, cury + iy, col);
+                        } else
+                        {
+                            tex.SetPixel(curx + ix, cury + iy, col_bg);
+                        }
+                    }
+                }
+
+                curx += Tafel.TW;
+                if (curx+Tafel.TW>=imageKopieGröße){
+                    curx = 0;
+                    cury += Tafel.TH;
+                }
+                yield return 0;
+            }
+        }
+        tex.Apply();
+
+
+        byte[] bytes = tex.EncodeToPNG();
+        File.WriteAllBytes("Assets/Resources/SavedScreen.png", bytes);
+
+        string s = "";
+        for (var i = 0; i < tex_ergebnisse.Length;i++){
+            if (tex_ergebnisse[i]==-1){
+                s += "0";
+            } else {
+                s += "1";
+            }
+        }
+        File.WriteAllText("Assets/Resources/SavedScreenErgebnisse.txt", s);
+        yield break;
+    }
+
+    private bool[,] _ar=null;
+    private int _d;
+    private int _x;
+    private int _y;
 
     // Update is called once per frame
     void Update ()
     {
 
+        if (startstring!=""){
+            _ar = Tafel.FromString(startstring);
+            startstring="";
+        }
+
+        if (regentex){
+            regentex = false;
+            StartCoroutine("GenTex");
+        }
         if (l1)
         {
             l1 = false;
+            
+            _ar = Tafel.mitNiveau(1,out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
         }
         if (l2)
         {
             l2 = false;
+            
+            _ar = Tafel.mitNiveau(2, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
         }
         if (l3)
         {
             l3 = false;
+            
+            _ar = Tafel.mitNiveau(3, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
         }
         if (l4)
         {
             l4 = false;
+            
+            _ar = Tafel.mitNiveau(4, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
         }
         if (l5)
         {
             l5 = false;
+            
+            _ar = Tafel.mitNiveau(5, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
         }
         if (l6)
         {
             l6 = false;
+            
+            _ar = Tafel.mitNiveau(6, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
+            
         }
         if (l7)
         {
             l7 = false;
+            
+            _ar = Tafel.mitNiveau(7, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
+            
         }
         if (l8)
         {
             l8 = false;
+            
+            _ar = Tafel.mitNiveau(8, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
+            
         }
         if (l9)
         {
             l9 = false;
+            
+            _ar = Tafel.mitNiveau(9, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
+            
         }
         if (l10)
         {
             l10 = false;
+            
+            _ar = Tafel.mitNiveau(10, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
+            
         }
         if (l11)
         {
             l11 = false;
+            
+            _ar = Tafel.mitNiveau(11, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
+            
         }
         if (l12)
         {
             l12 = false;
+            
+            _ar = Tafel.mitNiveau(12, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
+            
         }
         if (l13)
         {
             l13 = false;
+            
+            _ar = Tafel.mitNiveau(13, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
+            
         }
         if (l14)
         {
             l14 = false;
+            
+            _ar = Tafel.mitNiveau(14, out _d, out _x, out _y);
+            Debug.Log(Tafel.ToString(_ar));
         }
         if (l15)
         {
             l15 = false;
+            
+            _ar = Tafel.mitNiveau(15, out _d, out _x, out _y);   
+            Debug.Log(Tafel.ToString(_ar));         
+        }
+
+        if (Input.GetKeyDown(KeyCode.P) && _ar!=null){
+            _d = Tafel.PrüfRichtungMitHinzuhinzufügen(_ar, out _x, out _y);
+            Debug.Log("PrüfRichtungMitHinzuhinzufügen "+_d);
         }
 
         var generate = -1;
@@ -403,47 +393,11 @@ O.......O....O..O....
         }
 
         if (generate>0){
-            int i = 0;
-            while (true){
-                i++;
-                if (i>1000000){
-                    Debug.Log(":(");
-                    break;
-                }
-                bool[,] ar = Tafel.Random(UnityEngine.Random.Range(0,1000000), density);
-                int x, y;
-           
-                var pr = generate==1 ? Tafel.PrüfRichtung(ar, out x, out y)
-                                            : ( generate==2?Tafel.PrüfRichtungMitHinzufügen(ar, out x, out y)
-                                               : Tafel.PrüfRichtungMitHinzuhinzufügen(ar,out x, out y));
-
-                if (pr == 1 || pr == -1)
-                {
-                    Debug.Log(pr+"\t("+x+","+ y+")");
-                    _ar = ar;
-                    _ax = x;
-                    _ay = y;
-                    _apr = pr;
-                    break;
-                }
-
-            }
-
-            if (Input.GetKey(KeyCode.LeftControl))
-            {
-                int c = 0;
-                while (Verbesser(_ar, generate == 2, ref _ax, ref _ay) && c < 1)
-                {
-                    c++;
-                }
-            }
+            
+            Tafel.GenerateWithDensity(generate,density,out _d, out _x, out _y,false);
         }
-
-
-        if (_ar != null)
-        {
-
-            ZeigTafel(_ar, _apr, _ax, _ay);
+        if (_ar!=null){
+            ZeigTafel(_ar,_d,_x,_y);
         }
 	}
 }

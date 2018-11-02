@@ -17,22 +17,17 @@ Shader "Standard Triplanar"
         _BumpScale("", Float) = 1
         _BumpMap("", 2D) = "bump" {}
 
-        _OcclusionStrength("", Range(0, 1)) = 1
-        _OcclusionMap("", 2D) = "white" {}
 
         _MapScale("", Float) = 1
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
-        Cull Off
+        //Cull Off
         
         CGPROGRAM
         
         #pragma surface surf Standard vertex:vert fullforwardshadows addshadow
-
-        #pragma shader_feature _NORMALMAP
-        #pragma shader_feature _OCCLUSIONMAP
 
         #pragma target 3.0
 
@@ -47,21 +42,18 @@ Shader "Standard Triplanar"
         half _BumpScale;
         sampler2D _BumpMap;
 
-        half _OcclusionStrength;
-        sampler2D _OcclusionMap;
 
         half _MapScale;
 
         struct Input
         {
-            float3 localCoord;
+            float3 worldPos;
             float3 localNormal;
         };
 
         void vert(inout appdata_full v, out Input data)
         {
             UNITY_INITIALIZE_OUTPUT(Input, data);
-            data.localCoord = v.vertex.xyz;
             data.localNormal = v.normal.xyz;
         }
 
@@ -74,9 +66,9 @@ Shader "Standard Triplanar"
             bf /= dot(bf, (float3)1);
 
             // Triplanar mapping
-            float2 tx = IN.localCoord.yz * _MapScale;
-            float2 ty = IN.localCoord.zx * _MapScale;
-            float2 tz = IN.localCoord.xy * _MapScale;
+            float2 tx = IN.worldPos.yz * _MapScale;
+            float2 ty = IN.worldPos.zx * _MapScale;
+            float2 tz = IN.worldPos.xy * _MapScale;
             
             
             // Base color
@@ -94,9 +86,9 @@ Shader "Standard Triplanar"
             
             half4 color = (cx + cy + cz) * lerp(_Color,_Color2,pc);
             
-            color.r*=(1+sin(IN.localCoord.x/10))*0.5*0.8 + (1+sin(IN.localCoord.x))*0.5*0.2;
-            color.b*=(1+sin(IN.localCoord.z/10))*0.5*0.8 + (1+sin(IN.localCoord.z))*0.5*0.2;
-            color.g*=(1+sin(IN.localCoord.y))/2;
+            color.r*=(1+sin(IN.worldPos.x/10))*0.5*0.8 + (1+sin(IN.worldPos.x))*0.5*0.2;
+            color.b*=(1+sin(IN.worldPos.z/10))*0.5*0.8 + (1+sin(IN.worldPos.z))*0.5*0.2;
+            color.g*=(1+sin(IN.worldPos.y))/2;
             o.Albedo = color.rgb;
             o.Alpha = color.a;
 

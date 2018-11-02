@@ -13,9 +13,16 @@ public class StartScript : MonoBehaviour {
         GetComponent<Button>().onClick.AddListener(TaskOnClick);
     }
 
+    public float gongvol=0.1f;
     public void TaskOnClick(){
-        asource.PlayOneShot(boop,0.2f);
+        asource.PlayOneShot(boop,gongvol);
         
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MeshGen");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+    }
+
+    void Update(){
+        if (Input.GetButtonDown("action")){
+            TaskOnClick();
+        }
     }
 }

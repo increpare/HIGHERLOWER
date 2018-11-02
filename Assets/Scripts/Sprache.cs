@@ -8,12 +8,12 @@ public class Sprache : MonoBehaviour
 {
 
     public Text buttonLabel;
-    public static string sprache = "DE";
+    public static string sprache = "EN";
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
-        sprache = PlayerPrefs.GetString("sprache", "DE");
+        sprache = PlayerPrefs.GetString("sprache", "EN");
         buttonLabel.text = sprache;
         GetComponent<Button>().onClick.AddListener(TaskOnClick);
     }

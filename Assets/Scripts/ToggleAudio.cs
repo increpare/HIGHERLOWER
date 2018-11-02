@@ -9,6 +9,8 @@ public class ToggleAudio : MonoBehaviour {
     {
         //Fetch the Toggle GameObject
         m_Toggle = GetComponent<Toggle>();
+		m_Toggle.isOn = AudioListener.volume>0.5f;
+		
         //Add listener for when the state of the Toggle changes, to take action
         m_Toggle.onValueChanged.AddListener(delegate {
                 ToggleValueChanged(m_Toggle);

@@ -34,8 +34,16 @@ public class Player : MonoBehaviour {
     public int lastdir=-1;
 
     public void DoMove(int dir){
+        
         if (pc>=0.9f)
         {
+                
+            float pp=1.0f;
+            pc=1.0f;
+            
+            transform.position = Vector3.Lerp(fpos, tpos, pp);
+            transform.rotation = Quaternion.Slerp( Quaternion.LookRotation(fdir), Quaternion.LookRotation(tdir), pc);
+
             if (dir == 0)
             {
                 var r = new Ray(transform.position, transform.forward);
@@ -172,9 +180,18 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.R)){
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MeshGen");
+        if (Input.GetKeyDown(KeyCode.M)){
+            AudioListener.volume=1.0f-AudioListener.volume;
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape)){
+            UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScene");
+        }
+
+        if (Input.GetKeyDown(KeyCode.R)){
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+        }
+
         if (turnin)
         {
             pc += Time.deltaTime / turnlength;

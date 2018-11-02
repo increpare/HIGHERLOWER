@@ -493,9 +493,9 @@ public class Tafel
                     continue;
                 }
 
-                for (var i2 = i+1; i2 < TW - 1; i2++)
+                for (var i2 = i; i2 < TW - 1; i2++)
                 {
-                    for (var j2 = j; j2 < TH - 1; j2++)
+                    for (var j2 = j+1; j2 < TH - 1; j2++)
                     {
                         if (ar[i2, j2] == true)
                         {
@@ -513,13 +513,12 @@ public class Tafel
                             int r_this2 = PrüfRichtung(ar, out x_this2, out y_this2);
                             if (r_this2==1 || r_this2==-1){
                                 r_kollektiv = -2;
-                                UnityEngine.Debug.Log("BAD1");
+                                ar[i2,j2] = false;
+                                continue;
                             }
                             
                             ar[i, j] = true;
 
-                            ar[i2,j2] = false;
-                            continue;
                         }
 
                         int x_this, y_this;
@@ -538,11 +537,9 @@ public class Tafel
                         else if (r_this == r_kollektiv)
                         {
                             //all ok
-                            UnityEngine.Debug.Log("C");
                         }
                         else if (r_kollektiv == 0)
                         {
-                            UnityEngine.Debug.Log("A");
                             r_kollektiv = r_this;
                             x_kollektiv = x_this;
                             y_kollektiv = y_this;
@@ -555,7 +552,6 @@ public class Tafel
                             }
                             else
                             {
-                                UnityEngine.Debug.Log("B");
                                 r_kollektiv = -2;
                             }
                         }

@@ -124,9 +124,9 @@ public class TitleMenu : MonoBehaviour {
 			s+="Start\n";
 		}
 		if (index==1){
-			s+="[ "+S("Sprache (Detusch)","Language (English)")+" ]\n";
+			s+="[ "+S("Sprache (Deutsch)","Language (English)")+" ]\n";
 		} else {
-			s+=S("Sprache (Detusch)","Language (English)")+"\n";
+			s+=S("Sprache (Deutsch)","Language (English)")+"\n";
 		}
 		if (!audiomuted){
 			if (index==2){

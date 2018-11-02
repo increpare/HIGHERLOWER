@@ -35,6 +35,8 @@ public class Player : MonoBehaviour {
 
     public void DoMove(int dir){
         
+        Cursor.visible=false;
+
         if (pc>=0.9f)
         {
                 
@@ -179,7 +181,7 @@ public class Player : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+        
         if (Input.GetKeyDown(KeyCode.M)){
             AudioListener.volume=1.0f-AudioListener.volume;
         }
@@ -235,6 +237,11 @@ public class Player : MonoBehaviour {
             }
         }
 
+        
+		if (Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(1)){	
+            Cursor.visible=false;
+		}
+        
         if (Input.GetButtonDown("left")){
             DoMove(2);
         }

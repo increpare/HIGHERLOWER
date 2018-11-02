@@ -13,7 +13,7 @@ public class SpracheS : MonoBehaviour {
 
     public void UpdateText()
     {
-        var s = Sprache.sprache == "DE" ? de : en;
+        var s = TitleMenu.sprache == "de" ? de : en;
         var t = this.GetComponent<Text>();
         if (t!=null){
             t.text = s;

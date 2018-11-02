@@ -16,11 +16,11 @@ public class StartScript : MonoBehaviour {
     public float gongvol=0.1f;
     public void TaskOnClick(){
         asource.PlayOneShot(boop,gongvol);
-        
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
     }
 
     void Update(){
+        Cursor.visible=true;
         if (Input.GetButtonDown("action")){
             TaskOnClick();
         }

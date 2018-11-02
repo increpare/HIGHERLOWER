@@ -19,9 +19,11 @@ public class TextSize : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		var d = Vector3.Distance(spieler.transform.position,transform.position);
-		if (d<2&& audios.active==false){
-			audios.SetActive(true);
-		} 
+		if (audios!=null){
+			if (d<2&& audios.active==false){
+				audios.SetActive(true);
+			} 
+		}
 		d = (Mathf.Clamp(d,mindist,maxdist)-mindist)/(maxdist-mindist);
 		transform.localScale = Vector3.one*(1-d);
 		//audioMixer.SetFloat("GongVol",(1-d)*80.0f-80.0f);
